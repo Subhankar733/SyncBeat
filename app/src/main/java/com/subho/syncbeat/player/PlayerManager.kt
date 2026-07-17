@@ -9,6 +9,9 @@ object PlayerManager {
 
     private var player: ExoPlayer? = null
 
+    var currentSong: Song? = null
+        private set
+
     fun init(context: Context) {
         if (player == null) {
             player = ExoPlayer.Builder(context.applicationContext).build()
@@ -16,6 +19,8 @@ object PlayerManager {
     }
 
     fun play(song: Song) {
+        currentSong = song
+
         player?.apply {
             setMediaItem(MediaItem.fromUri(song.uri))
             prepare()
