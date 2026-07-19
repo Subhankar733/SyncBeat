@@ -4,14 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.subho.syncbeat.model.PlayerViewModel
 
@@ -21,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaterialTheme {
                 val viewModel: PlayerViewModel = viewModel()
-                val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
+                val isPlaying by viewModel.isPlaying.collectAsState()
                 
                 Scaffold(
                     bottomBar = {
@@ -32,7 +29,6 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) { innerPadding ->
-                    // এখানে গানের লিস্ট থাকবে
                     Box(modifier = Modifier.padding(innerPadding)) {
                         Text("SyncBeat - মিউজিক প্লেয়ার রেডি!", modifier = Modifier.padding(16.dp))
                     }
