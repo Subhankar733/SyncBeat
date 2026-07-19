@@ -4,17 +4,52 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Pause
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.media3.exoplayer.ExoPlayer
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.subho.syncbeat.model.PlayerViewModel
 
 class MainActivity : ComponentActivity() {
-    // এখানে তোর বাকি কোড এবং প্লেয়ার লজিক থাকবে
-    // BottomPlayerBar এর কোডটিও এখানে বা আলাদা ফাইলে বসাতে পারবি
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                val viewModel: PlayerViewModel = viewModel()
+                val isPlaying by viewModel.isPlaying.collectAsStateWithLifecycle()
+                
+                Scaffold(
+                    bottomBar = {
+                        BottomPlayerBar(
+                            isPlaying = isPlaying,
+                            songTitle = "Playing Now",
+                            onPlayPauseClick = { viewModel.togglePlayback() }
+                        )
+                    }
+                ) { innerPadding ->
+                    // এখানে গানের লিস্ট থাকবে
+                    Box(modifier = Modifier.padding(innerPadding)) {
+                        Text("SyncBeat - মিউজিক প্লেয়ার রেডি!", modifier = Modifier.padding(16.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomPlayerBar(isPlaying: Boolean, songTitle: String, onPlayPauseClick: () -> Unit) {
+    Surface(modifier = Modifier.fillMaxWidth().height(70.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text = songTitle, modifier = Modifier.weight(1f))
+            Button(onClick = onPlayPauseClick) {
+                Text(if (isPlaying) "Pause" else "Play")
+            }
+        }
+    }
 }
