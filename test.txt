@@ -1,0 +1,2 @@
+Hello SyncBeat
+Termux EOF Test
