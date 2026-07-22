@@ -36,6 +36,16 @@ object PlayerManager {
         player?.play()
     }
 
+    fun togglePlayPause() {
+        player?.let {
+            if (it.isPlaying) {
+                it.pause()
+            } else {
+                it.play()
+            }
+        }
+    }
+
     fun stop() {
         player?.stop()
     }
